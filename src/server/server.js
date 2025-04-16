@@ -244,12 +244,14 @@ const tickPlayer = (currentPlayer) => {
         const eatenMassIndexes = util.getIndexes(map.massFood.data, mass => canEatMass(currentCell, cellCircle, cellIndex, mass));
         const eatenVirusIndexes = util.getIndexes(map.viruses.data, virus => canEatVirus(currentCell, cellCircle, virus));
 
+        let massGained = eatenMassIndexes.reduce((acc, index) => acc + map.massFood.data[index].mass, 0);
+
         if (eatenVirusIndexes.length > 0) {
+            massGained += map.viruses.data[eatenVirusIndexes].mass / 4;
+
             cellsToSplit.push(cellIndex);
             map.viruses.delete(eatenVirusIndexes)
         }
-
-        let massGained = eatenMassIndexes.reduce((acc, index) => acc + map.massFood.data[index].mass, 0);
 
         map.food.delete(eatenFoodIndexes);
         map.massFood.remove(eatenMassIndexes);

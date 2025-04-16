@@ -2,10 +2,10 @@ module.exports = {
     host: "0.0.0.0",
     port: 3000,
     logpath: "logger.php",
-    foodMass: 1,
-    fireFood: 20,
+    foodMass: 2,
+    fireFood: 8,
     limitSplit: 16,
-    defaultPlayerMass: 10,
+    defaultPlayerMass: 6,
 	virus: {
         fill: "#33ff33",
         stroke: "#19D119",

@@ -74,8 +74,7 @@ const drawCellWithLines = (cell, borders, graph) => {
     graph.stroke();
 }
 
-const drawCells = (cells, playerConfig, toggleMassState, borders, graph) => {
-    for (let cell of cells) {
+const drawCells = (cell, playerConfig, toggleMassState, borders, graph) => {
         // Draw the cell itself
         graph.fillStyle = cell.color;
         graph.strokeStyle = cell.borderColor;
@@ -108,7 +107,6 @@ const drawCells = (cells, playerConfig, toggleMassState, borders, graph) => {
             graph.strokeText(Math.round(cell.mass), cell.x, cell.y + fontSize);
             graph.fillText(Math.round(cell.mass), cell.x, cell.y + fontSize);
         }
-    }
 };
 
 const drawGrid = (global, player, screen, graph) => {

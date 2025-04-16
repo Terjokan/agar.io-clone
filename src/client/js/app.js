@@ -313,6 +313,7 @@ function gameLoop() {
         graph.fillRect(0, 0, global.screen.width, global.screen.height);
 
         render.drawGrid(global, player, global.screen, graph);
+        
         foods.forEach(food => {
             let position = getPosition(food, player, global.screen);
             render.drawFood(position, food, graph);
@@ -321,10 +322,7 @@ function gameLoop() {
             let position = getPosition(fireFood, player, global.screen);
             render.drawFireFood(position, fireFood, playerConfig, graph);
         });
-        viruses.forEach(virus => {
-            let position = getPosition(virus, player, global.screen);
-            render.drawVirus(position, virus, graph);
-        });
+
 
 
         let borders = { // Position of the borders on the screen
@@ -356,7 +354,24 @@ function gameLoop() {
         cellsToDraw.sort(function (obj1, obj2) {
             return obj1.mass - obj2.mass;
         });
-        render.drawCells(cellsToDraw, playerConfig, global.toggleMassState, borders, graph);
+
+        viruses.sort(function (obj1, obj2) {
+            return obj1.mass - obj2.mass;
+        });
+
+        let vIndex = 0; 
+        for (let i = 0; i < cellsToDraw.length; i++) {
+            while(vIndex < viruses.length && viruses[vIndex].mass < cellsToDraw[i].mass){
+                let position = getPosition(viruses[vIndex], player, global.screen);
+                render.drawVirus(position, viruses[vIndex], graph);
+                vIndex++;
+            }
+            render.drawCells(cellsToDraw[i], playerConfig, global.toggleMassState, borders, graph);
+        }
+        for (let i = vIndex; i < viruses.length; i++) {
+            let position = getPosition(viruses[i], player, global.screen);
+            render.drawVirus(position, viruses[i], graph);
+        }
 
         socket.emit('0', window.canvas.target); // playerSendTarget "Heartbeat".
     }

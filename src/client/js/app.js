@@ -326,11 +326,12 @@ function gameLoop() {
 
 
 
+
         let borders = {
-            left: global.screen.width / 2 - player.x,
-            right: global.screen.width / 2 + global.game.width - player.x,
-            top: global.screen.height / 2 - player.y,
-            bottom: global.screen.height / 2 + global.game.height - player.y
+            left: (global.screen.width / 2 - player.x),
+            right: (global.screen.width / 2 - player.x + global.game.width),
+            top: (global.screen.height / 2 - player.y),
+            bottom: (global.screen.height / 2 - player.y + global.game.height)
         };
         if (global.borderDraw) {
             render.drawBorder(borders, graph, global.screen.scaler);

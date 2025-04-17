@@ -90,7 +90,7 @@ exports.Player = class {
         this.admin = false;
         this.screenWidth = null;
         this.screenHeight = null;
-        this.scale = null;
+        this.scale = 1;
         this.timeToMerge = null;
         this.setLastHeartbeat();
     }
@@ -101,7 +101,7 @@ exports.Player = class {
         this.massTotal = defaultPlayerMass;
         this.x = position.x;
         this.y = position.y;
-        this.scale = 0.4;
+        this.scale = 1;
         this.target = {
             x: 0,
             y: 0
@@ -153,10 +153,12 @@ exports.Player = class {
             this.scale = 1.0;
         else if(this.massTotal < 1000)
             this.scale = 0.8;
+        else if(this.massTotal < 3000)
+            this.scale = 0.65;
         else if(this.massTotal < 5000)
-            this.scale = 0.6;
+            this.scale = 0.54;
         else
-            this.scale = 0.4;
+            this.scale = 0.;
     }
 
 

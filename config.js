@@ -4,7 +4,7 @@ module.exports = {
     logpath: "logger.php",
     foodMass: 2,
     fireFood: 8,
-    limitSplit: 22,
+    limitSplit: 12,
     defaultPlayerMass: 6,
 	virus: {
         fill: "#33ff33",

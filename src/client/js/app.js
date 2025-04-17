@@ -245,6 +245,7 @@ function setupSocket(socket) {
             player.massTotal = playerData.massTotal;
             player.cells = playerData.cells;
         }
+        global.screen.scaler = playerData.scale;
         users = userData;
         foods = foodsList;
         viruses = virusList;
@@ -282,8 +283,8 @@ const isUnnamedCell = (name) => name.length < 1;
 
 const getPosition = (entity, player, screen) => {
     return {
-        x: entity.x - player.x + screen.width / 2,
-        y: entity.y - player.y + screen.height / 2
+        x: (entity.x - player.x) * screen.scaler + screen.width / 2,
+        y: (entity.y - player.y) * screen.scaler + screen.height / 2
     }
 }
 
@@ -316,7 +317,7 @@ function gameLoop() {
         
         foods.forEach(food => {
             let position = getPosition(food, player, global.screen);
-            render.drawFood(position, food, graph);
+            render.drawFood(position, food, graph, global.screen.scaler);
         });
         fireFood.forEach(fireFood => {
             let position = getPosition(fireFood, player, global.screen);
@@ -325,14 +326,15 @@ function gameLoop() {
 
 
 
-        let borders = { // Position of the borders on the screen
-            left: global.screen.width / 2 - player.x,
-            right: global.screen.width / 2 + global.game.width - player.x,
-            top: global.screen.height / 2 - player.y,
-            bottom: global.screen.height / 2 + global.game.height - player.y
-        }
+
+        let borders = {
+            left: (global.screen.width / 2 - player.x),
+            right: (global.screen.width / 2 - player.x + global.game.width),
+            top: (global.screen.height / 2 - player.y),
+            bottom: (global.screen.height / 2 - player.y + global.game.height)
+        };
         if (global.borderDraw) {
-            render.drawBorder(borders, graph);
+            render.drawBorder(borders, graph, global.screen.scaler);
         }
 
         var cellsToDraw = [];
@@ -346,8 +348,8 @@ function gameLoop() {
                     mass: users[i].cells[j].mass,
                     name: users[i].name,
                     radius: users[i].cells[j].radius,
-                    x: users[i].cells[j].x - player.x + global.screen.width / 2,
-                    y: users[i].cells[j].y - player.y + global.screen.height / 2
+                    x: (users[i].cells[j].x - player.x) * global.screen.scaler + global.screen.width / 2,
+                    y: (users[i].cells[j].y - player.y) * global.screen.scaler + global.screen.height / 2
                 });
             }
         }
@@ -363,14 +365,14 @@ function gameLoop() {
         for (let i = 0; i < cellsToDraw.length; i++) {
             while(vIndex < viruses.length && viruses[vIndex].mass < cellsToDraw[i].mass){
                 let position = getPosition(viruses[vIndex], player, global.screen);
-                render.drawVirus(position, viruses[vIndex], graph);
+                render.drawVirus(position, viruses[vIndex], graph, global.screen.scaler);
                 vIndex++;
             }
-            render.drawCells(cellsToDraw[i], playerConfig, global.toggleMassState, borders, graph);
+            render.drawCells(cellsToDraw[i], playerConfig, global.toggleMassState, borders, graph, global.screen.scaler);
         }
         for (let i = vIndex; i < viruses.length; i++) {
             let position = getPosition(viruses[i], player, global.screen);
-            render.drawVirus(position, viruses[i], graph);
+            render.drawVirus(position, viruses[i], graph, global.screen.scaler);
         }
 
         socket.emit('0', window.canvas.target); // playerSendTarget "Heartbeat".

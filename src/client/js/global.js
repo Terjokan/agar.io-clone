@@ -14,7 +14,8 @@ module.exports = {
     // Canvas
     screen: {
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
+        scaler: 1
     },
     game: {
         width: 0,
